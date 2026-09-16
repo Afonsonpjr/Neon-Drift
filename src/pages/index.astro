@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#071817" />
+    <meta name="description" content="Pilote além da órbita. Desvie de obstáculos, colete cristais e use o impulso em NEON DRIFT, uma corrida 3D sem fim." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>NEON DRIFT — Corrida orbital</title>
+  </head>
+  <body>
+    <div id="app" data-phase="menu">
+      <div id="scene" aria-label="Pista de corrida orbital em 3D"></div>
+      <div class="scene-shade" aria-hidden="true"></div>
+      <div class="screen-grain" aria-hidden="true"></div>
+      <div id="impact" aria-hidden="true"></div>
+
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="NEON DRIFT, início">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 2 18 18-18 18L2 20Z"/><path d="m13 26 4-15 6 18 4-15"/></svg>
+          <span><strong>NEON DRIFT</strong><small>ORBITAL RACING</small></span>
+        </a>
+        <div class="sector-label"><span class="status-dot"></span> SETOR 07 <span class="sector-divider">/</span> ÓRBITA INFINITA</div>
+        <div class="header-actions">
+          <button id="sound-button" class="icon-button" type="button" aria-label="Ativar som" aria-pressed="false" title="Ativar ou desativar som">
+            <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg>
+            <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path d="m16 9 6 6m0-6-6 6"/></svg>
+          </button>
+          <button id="fullscreen-button" class="icon-button" type="button" aria-label="Alternar tela cheia" title="Tela cheia">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section id="start-screen" aria-labelledby="game-title">
+          <div class="launch-panel">
+            <div class="eyebrow"><span></span> ARCADE / CORRIDA ORBITAL</div>
+            <h1 id="game-title"><span>NEON</span><br />DRIFT<span class="title-period">.</span></h1>
+            <p class="hero-tagline">Sem freios. Sem fim.</p>
+            <p class="hero-description">Encontre seu ritmo no limite da órbita.<br />Desvie do caos. Colete energia. Vá mais longe.</p>
+            <div class="launch-settings">
+              <label for="difficulty">NÍVEL DA PISTA</label>
+              <div class="select-wrap"><select id="difficulty" aria-label="Dificuldade da corrida"><option value="normal">Explorador</option><option value="hard">Especialista</option></select><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></div>
+            </div>
+            <button id="start-button" class="primary-button launch-button" type="button" disabled><span>Iniciar corrida</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button>
+            <div class="launch-under"><span class="launch-key"><kbd>ENTER</kbd> para iniciar</span><button id="help-button" class="text-button" type="button">Como jogar <span>↗</span></button></div>
+            <div class="menu-record"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8v6a4 4 0 0 1-8 0Zm0 2H4v3a4 4 0 0 0 5 4m7-7h4v3a4 4 0 0 1-5 4m-3 1v5m-4 3h8m-6-3h4"/></svg><span>MELHOR CORRIDA</span><strong id="menu-best">000000</strong></div>
+          </div>
+
+          <div class="scene-annotation" aria-hidden="true"><span class="annotation-cross">+</span><div><span>ND—01</span><strong>VELOCIDADE É LIBERDADE</strong></div><span class="annotation-line"></span></div>
+
+          <div class="briefing" aria-label="Resumo dos controles">
+            <div class="briefing-item"><span class="briefing-number">01</span><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M11 8 5 14l6 6m6-12 6 6-6 6M5 14h18"/></svg><div><strong>DESVIE</strong><p><span class="desktop-copy">A / D ou setas</span><span class="mobile-copy">Toque nas setas</span></p></div></div>
+            <div class="briefing-item"><span class="briefing-number">02</span><svg viewBox="0 0 28 28" aria-hidden="true"><path d="m14 3 9 11-9 11L5 14Zm-9 11h18M14 3l-3 11 3 11 3-11Z"/></svg><div><strong>COLETE</strong><p>Cristais valem pontos</p></div></div>
+            <div class="briefing-item"><span class="briefing-number">03</span><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M16 3 6 16h7l-1 9 10-14h-7Z"/></svg><div><strong>ACELERE</strong><p><span class="desktop-copy">Segure espaço</span><span class="mobile-copy">Segure o impulso</span></p></div></div>
+            <div class="briefing-note"><span class="status-dot"></span> PRONTO PARA O PRÓXIMO NÍVEL?</div>
+          </div>
+        </section>
+
+        <section id="hud" class="hud" aria-label="Painel de instrumentos" hidden>
+          <div class="score-panel"><span class="instrument-label">PONTUAÇÃO</span><strong id="score">000000</strong><span id="combo" class="combo">×1</span><div class="best-line">RECORDE <span id="best">000000</span></div></div>
+          <div class="center-instruments"><div class="health-row"><span class="instrument-label">INTEGRIDADE</span><div id="health" aria-label="3 vidas"><span class="life"></span><span class="life"></span><span class="life"></span></div></div><div class="energy-row"><span class="instrument-label">IMPULSO</span><span class="boost-key">ESPAÇO</span></div><div class="energy-track"><div id="energy-fill"></div></div></div>
+          <div class="speed-panel"><div><strong id="speed">0</strong><span>KM/H</span></div><div class="distance-line"><span id="distance">0</span> M PERCORRIDOS</div></div>
+          <button id="pause-button" class="icon-button pause-button" type="button" aria-label="Pausar corrida" title="Pausar (Esc)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+        </section>
+
+        <section id="pause-screen" class="overlay-screen" aria-labelledby="pause-title" hidden>
+          <div class="modal-card"><div class="eyebrow"><span></span> SISTEMAS EM ESPERA</div><h2 id="pause-title">Respire.<br /><em>A órbita espera.</em></h2><p>Sua corrida continua de onde parou.</p><button id="resume-button" class="primary-button" type="button"><span>Continuar corrida</span><span aria-hidden="true">→</span></button><button id="quit-button" class="secondary-button" type="button">Voltar ao início</button><div class="modal-footnote"><kbd>ESC</kbd> para continuar</div></div>
+        </section>
+
+        <section id="gameover-screen" class="overlay-screen" aria-labelledby="gameover-title" hidden>
+          <div class="modal-card gameover-card"><div class="eyebrow"><span></span> TRANSMISSÃO ENCERRADA</div><h2 id="gameover-title">Fim da<br /><em>corrida.</em></h2><p id="record-label" class="record-label">A próxima órbita é sua.</p><div class="final-score-wrap"><span class="instrument-label">PONTUAÇÃO FINAL</span><strong id="final-score">000000</strong></div><div class="result-grid"><div><span>DISTÂNCIA</span><strong><span id="final-distance">0</span> <small>m</small></strong></div><div><span>CRISTAIS</span><strong id="final-crystals">0</strong></div><div><span>RECORDE</span><strong id="final-best">0</strong></div></div><button id="restart-button" class="primary-button" type="button"><span>Tentar de novo</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5m5 0a8 8 0 1 0-2 6M20 7v5"/></svg></button><button id="home-button" class="secondary-button" type="button">Voltar ao início</button></div>
+        </section>
+
+        <div id="touch-controls" aria-label="Controles de toque" hidden><button id="touch-left" class="touch-arrow" type="button" aria-label="Mover para a esquerda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button><button id="touch-boost" class="touch-boost" type="button" aria-label="Segurar para usar impulso"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 2-9 12h6l-1 8 9-12h-6Z"/></svg><span>IMPULSO</span></button><button id="touch-right" class="touch-arrow" type="button" aria-label="Mover para a direita"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button></div>
+
+        <div id="loading" role="status"><span class="loading-spinner"></span>Preparando os motores…</div>
+        <div id="fatal" class="fatal-card" role="alert" hidden><strong>Não foi possível iniciar a pista.</strong><p>Seu navegador precisa oferecer suporte a WebGL. Tente atualizar a página ou usar um navegador mais recente.</p><a href="/" class="secondary-button">Tentar novamente</a></div>
+        <div id="toast" role="status" aria-live="polite"></div>
+      </main>
+
+      <footer class="site-footer"><span><span class="status-dot"></span> SISTEMAS ONLINE</span><span class="footer-center">FORA DA GRAVIDADE. DENTRO DO JOGO.</span><span class="engine-mark">THREE.JS <span>×</span> ASTRO <span class="footer-version">/ V.01</span></span></footer>
+
+      <dialog id="help-dialog" aria-labelledby="help-title"><div class="help-head"><span class="eyebrow">MANUAL DO PILOTO</span><button id="close-help" class="icon-button" type="button" aria-label="Fechar instruções"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><h2 id="help-title">Domine a órbita.</h2><p>Sobreviva o máximo possível. A pista fica mais rápida a cada segundo.</p><div class="help-controls"><div><span>Movimentar</span><span><kbd>A</kbd> <kbd>D</kbd> ou <kbd>←</kbd> <kbd>→</kbd></span></div><div><span>Impulso</span><span><kbd>ESPAÇO</kbd></span></div><div><span>Pausar / continuar</span><span><kbd>ESC</kbd> ou <kbd>P</kbd></span></div></div><div class="help-tip"><span>01</span><p>Desvie dos obstáculos. Cada colisão custa uma vida.</p></div><div class="help-tip"><span>02</span><p>Colete os cristais luminosos para aumentar a pontuação.</p></div><div class="help-tip"><span>03</span><p>Segure o impulso para acelerar. A energia se recupera quando você solta.</p></div><p class="help-touch">No celular, use as setas e o botão de impulso na tela.</p></dialog>
+    </div>
+    <script>
+      import { boot } from '../game/main';
+      boot();
+    </script>
+  </body>
+</html>
